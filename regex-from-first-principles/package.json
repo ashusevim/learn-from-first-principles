@@ -1,0 +1,18 @@
+{
+  "name": "regex-from-first-principles",
+  "version": "0.1.0",
+  "description": "Learn Linux from the power button up. Don't memorize commands \u2014 understand the machine.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^7.3.2",
+    "@fontsource-variable/geist-mono": "^5.2.5"
+  },
+  "devDependencies": {
+    "pagefind": "^1.3.0"
+  }
+}

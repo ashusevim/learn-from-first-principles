@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ train --everything<span class="cursor">▊</span></p>
+    <h1>LLMs, from the <em>matrix</em> up.</h1>
+    <p class="sub">
+      "It's just autocomplete" is both an insult and — read charitably — the literal
+      truth. This course builds the autocomplete: tokens, embeddings, attention,
+      the transformer block, training, sampling — ending with a mini-GPT you trained,
+      that writes in your corpus's voice.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-an-llm/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use the API", we answer "what does the matrix actually do?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Attention, training, sampling — NumPy-scale math you can run and read.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The finale: a mini-GPT — tokenizer, transformer, training loop — ~300 lines.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The papers become readable</h3>
+      <p>After building, "Attention Is All You Need" reads like a parts list.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

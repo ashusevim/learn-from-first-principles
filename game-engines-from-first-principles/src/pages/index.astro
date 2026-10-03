@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ update --everything<span class="cursor">▊</span></p>
+    <h1>Game engines, from the <em>loop</em> up.</h1>
+    <p class="sub">
+      A game engine is not graphics — it's a loop that never stops: input, update,
+      render, sixty times a second, forever. This course builds the loop, the timestep,
+      ECS, physics, and scenes — then a playable game on your own engine.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-a-game-engine/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use Unity", we answer "what does the loop actually do?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Timesteps, ECS, collisions — patterns with loops you can read.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the systems</h3>
+      <p>Physics, input, rendering, scenes — each a chapter, each your own.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The engines become modules</h3>
+      <p>Unity/Unreal/Godot mapped onto systems you've personally written.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

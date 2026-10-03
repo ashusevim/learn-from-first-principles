@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ git cat-file --everything<span class="cursor">▊</span></p>
+    <h1>Git, from the <em>hash</em> up.</h1>
+    <p class="sub">
+      Most people learn Git as incantations to survive. This one opens <code>.git</code> and
+      shows you the truth: Git is a content-addressed database with file pointers — and by
+      the end you'll have built your own mini-git, and rebases will hold no fear.
+    </p>
+    <a class="cta" href="/chapters/01-key-value-store/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "how to branch", we answer "what is a branch, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Every Git concept is a file in .git you can read with cat.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The finale: a working mini-git — init, add, commit, log — in ~300 lines.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The porcelain becomes obvious</h3>
+      <p>After the plumbing, every git command reads as a obvious wrapper.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

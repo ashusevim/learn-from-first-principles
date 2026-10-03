@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ synthesize --everything<span class="cursor">▊</span></p>
+    <h1>Audio & DSP, from the <em>sample</em> up.</h1>
+    <p class="sub">
+      Sound is pressure waves sampled into numbers — and every synth, filter, and MP3
+      is math over those numbers. This course writes WAV files from raw bytes, builds
+      oscillators and envelopes, computes the DFT by hand, races the FFT, and ends
+      with a synthesizer playing actual music.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-sound/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use a synth app", we answer "what is a sample, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Waves, envelopes, filters, spectra — formulas you compute and verify.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the real thing</h3>
+      <p>Oscillators, ADSR, a sequencer — all stdlib Python, all playable WAVs.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The theory becomes audible</h3>
+      <p>Nyquist, aliasing, MP3 psychoacoustics — demonstrated in your own files.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

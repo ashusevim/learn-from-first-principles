@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = 'Graphics from First Principles', description = 'Stop memorizing commands. Understand the machine — from the power button up.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <a class="brand" href="/"><span class="prompt">&gt;_</span> graphics<span class="dim">-from-</span>first<span class="dim">-principles</span></a>
+        <div class="links">
+          <div class="search">
+            <input id="search-input" type="search" placeholder="Search…" autocomplete="off" aria-label="Search chapters" />
+            <div id="search-results" hidden></div>
+          </div>
+          <a href="/#chapters">Chapters</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>Don't memorize the tool. Understand the machine.</p>
+      <p class="dim">Part of <a href="https://github.com">The First Principles Project</a> — free, forever.</p>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        let pagefind = null;
+        const input = document.getElementById('search-input');
+        const box = document.getElementById('search-results');
+        if (!input || !box) return;
+
+        input.addEventListener('focus', async () => {
+          if (!pagefind) {
+            try { pagefind = await import('/pagefind/pagefind.js'); await pagefind.options({}); }
+            catch { input.placeholder = 'search unavailable (run pagefind)'; }
+          }
+        });
+
+        let timer = null;
+        input.addEventListener('input', () => {
+          clearTimeout(timer);
+          timer = setTimeout(async () => {
+            if (!pagefind) return;
+            const q = input.value.trim();
+            if (!q) { box.hidden = true; box.innerHTML = ''; return; }
+            const res = await pagefind.search(q);
+            const items = await Promise.all(res.results.slice(0, 8).map(r => r.data()));
+            box.innerHTML = items.length
+              ? items.map(d =>
+                  `<a href="${d.url}"><b>${d.meta?.title ?? d.url}</b><span>${d.excerpt || ''}</span></a>`).join('')
+              : '<span class="none">no results</span>';
+            box.hidden = false;
+          }, 120);
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.search')) { box.hidden = true; }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') { box.hidden = true; input.blur(); }
+          if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+        });
+      })();
+    </script>
+  </body>
+</html>

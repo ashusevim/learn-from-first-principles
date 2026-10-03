@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ understand --everything<span class="cursor">▊</span></p>
+    <h1>Linux, from the <em>power button</em> up.</h1>
+    <p class="sub">
+      Most Linux tutorials teach you commands to memorize. This one shows you what the machine
+      is actually doing — firmware, kernel, processes, files, memory — until nothing about
+      Linux feels like magic anymore.
+    </p>
+    <a class="cta" href="/chapters/01-power-button/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "how to use X", we answer "what is X made of?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Every claim comes with a command you can run and watch happen yourself.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The course ends with you building the thing — a mini shell, a container from scratch.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The docs become obvious</h3>
+      <p>After the principles, the man pages and source code read like plain English.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

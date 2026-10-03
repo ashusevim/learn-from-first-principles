@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ match --everything<span class="cursor">▊</span></p>
+    <h1>Regex, from the <em>state machine</em> up.</h1>
+    <p class="sub">
+      Regular expressions are a tiny language describing infinite sets of strings — and
+      the theory (NFA, DFA, Thompson's construction) turns "why is my regex hanging?"
+      into arithmetic. Build a naive matcher, watch it explode, then build the
+      automata-based engine that can't.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-regex/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use re.match", we answer "what does .* actually do?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Break the naive engine</h3>
+      <p>Catastrophic backtracking, measured — then made impossible.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the theory</h3>
+      <p>Thompson's construction, NFA simulation, subset construction — classic CS, live.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>Assemble the engine</h3>
+      <p>The finale: parse → compile → simulate → captures → finditer, ~300 lines.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

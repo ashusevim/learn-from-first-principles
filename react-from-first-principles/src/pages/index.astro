@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ render --declarative<span class="cursor">▊</span></p>
+    <h1>React, from the <em>diff</em> up.</h1>
+    <p class="sub">
+      Hooks feel like magic; reconciliation feels like a black box. This course builds
+      both — a virtual DOM, a diff, useState from scratch — until React is a ~200-line
+      idea you own, and every framework debate becomes a tradeoff you can name.
+    </p>
+    <a class="cta" href="/chapters/01-ui-as-a-function/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "learn hooks rules", we answer "what is state, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Reconciliation, keys, fibers — diffable algorithms you can build.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The finale: a working React — vdom, diff, hooks — in ~200 lines.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The ecosystem is tradeoffs</h3>
+      <p>Signals, Svelte, server components: named positions in a design space you know.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

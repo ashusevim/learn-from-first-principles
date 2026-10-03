@@ -1,0 +1,57 @@
+---
+import Base from './Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { chapterBySlug, chapterNeighbors } from '../lib/chapters';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description?: string;
+    part?: string;
+    written?: boolean;
+  };
+  url?: string;
+}
+
+const { frontmatter } = Astro.props;
+const slug = (Astro.props.url ?? '').split('/').pop() ?? '';
+const meta = chapterBySlug(slug);
+const { prev, next } = chapterNeighbors(slug);
+const written = frontmatter.written ?? meta?.written ?? false;
+const slotHtml = await Astro.slots.render('default');
+const readingTime = Math.max(1, Math.round(
+  slotHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 200));
+---
+<Base title={`${frontmatter.title} — A Browser from First Principles`} description={frontmatter.description}>
+  <div class="with-sidebar">
+    <Sidebar currentSlug={slug} />
+    <article class="chapter" data-pagefind-body>
+      <button class="side-toggle" id="side-toggle" aria-controls="sidebar">☰ Chapters</button>
+      <header>
+        <p class="eyebrow">{frontmatter.part ?? meta?.part}</p>
+        <h1>{frontmatter.title}</h1>
+        {frontmatter.description && <p class="lede">{frontmatter.description}</p>}
+      {written ? (
+        <p class="badge written">✅ Full chapter · ~{readingTime} min</p>
+      ) : (
+        <p class="badge outline">📝 Outline — full chapter coming soon</p>
+      )}
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <nav class="chapter-nav">
+        {prev ? <a class="prev" href={`/chapters/${prev.slug}/`}>← {prev.order}. {prev.title}</a> : <span />}
+        {next ? <a class="next" href={`/chapters/${next.slug}/`}>{next.order}. {next.title} →</a> : <span />}
+      </nav>
+    </article>
+  </div>
+
+  <script>
+    const btn = document.getElementById('side-toggle');
+    btn?.addEventListener('click', () => document.body.classList.toggle('sidebar-open'));
+    document.querySelector('.side-link.active')?.scrollIntoView({ block: 'nearest' });
+  </script>
+</Base>

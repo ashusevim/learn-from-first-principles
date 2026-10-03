@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ rank --everything<span class="cursor">▊</span></p>
+    <h1>Search engines, from the <em>crawler</em> up.</h1>
+    <p class="sub">
+      grep is a search engine. It just dies at a billion documents. This course builds
+      the three machines behind every search — crawler, inverted index, ranker — until
+      Google stops being magic and becomes TF-IDF plus PageRank at scale.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-search/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use Elasticsearch", we answer "what is an index, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Every ranking claim is a formula you can compute by hand.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The finale: crawl → index → rank → serve, a working mini-Google.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The papers become readable</h3>
+      <p>After building, the PageRank paper reads like documentation of your code.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

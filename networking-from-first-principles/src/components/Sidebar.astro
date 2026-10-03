@@ -1,0 +1,31 @@
+---
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+interface Props {
+  currentSlug?: string;
+}
+const { currentSlug } = Astro.props;
+---
+<aside class="sidebar" id="sidebar">
+  {PARTS.map((part) => {
+    const [partNum, partName] = part.split(' — ');
+    return (
+      <div class="side-part">
+        <p class="side-part-label">
+          <span>{partNum}</span> {partName}
+        </p>
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a
+            class:list={['side-link', { active: c.slug === currentSlug }]}
+            href={`/chapters/${c.slug}/`}
+            aria-current={c.slug === currentSlug ? 'page' : undefined}
+          >
+            <span class="n">{String(c.order).padStart(2, '0')}</span>
+            <span class="t">{c.title}</span>
+            <span class="s" aria-hidden="true">{c.written ? '●' : '○'}</span>
+          </a>
+        ))}
+      </div>
+    );
+  })}
+</aside>

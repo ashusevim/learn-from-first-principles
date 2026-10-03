@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ unshare --everything<span class="cursor">▊</span></p>
+    <h1>Containers, from the <em>syscall</em> up.</h1>
+    <p class="sub">
+      Docker feels like magic; Kubernetes feels like religion. Underneath both: three
+      kernel features — namespaces, cgroups, overlayfs — and a tarball. Build each one by
+      hand, then assemble your own container runtime, and the whole ecosystem becomes
+      plumbing.
+    </p>
+    <a class="cta" href="/chapters/01-process-is-a-container/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "docker run", we answer "what does the kernel actually do?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Namespaces, cgroups, and layers are kernel objects you can inspect live.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>The finale: a working container runtime in ~200 lines — no Docker in sight.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The ecosystem becomes plumbing</h3>
+      <p>After the kernel features, Docker/K8s read as userland around things you own.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

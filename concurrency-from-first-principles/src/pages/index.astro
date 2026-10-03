@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ thread --everything<span class="cursor">▊</span></p>
+    <h1>Concurrency, from the <em>instruction</em> up.</h1>
+    <p class="sub">
+      Race conditions, deadlocks, event loops, async/await — the scariest vocabulary in
+      software is really one question: what happens when two things run at once? Build the
+      race, the lock, the event loop, and your own thread pool, and the fear becomes
+      mechanics.
+    </p>
+    <a class="cta" href="/chapters/01-two-threads-one-counter/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use a mutex", we answer "what did the CPU actually do?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Races, locks, and event loops are instructions and syscalls you can watch.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>A spinlock, an epoll server, async from generators, a thread pool.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The tools become obvious</h3>
+      <p>async/await, goroutines, and channels become named patterns, not folklore.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

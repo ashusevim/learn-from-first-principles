@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ compile --everything<span class="cursor">▊</span></p>
+    <h1>Compilers, from the <em>lexer</em> up.</h1>
+    <p class="sub">
+      A compiler is four small programs in a chain — lexer, parser, compiler, VM — and
+      every "hard" idea (precedence, bytecode, closures) is a data structure you can
+      build in an afternoon. This course designs a language called Bite and builds its
+      complete toolchain, ending with a stack-machine VM that runs it.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-a-compiler/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use a parser generator", we answer "what is a token, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Precedence, bytecode, closures — data structures with rules you can read.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the real thing</h3>
+      <p>The full toolchain for a real language — tree-walker AND bytecode VM.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The papers become manuals</h3>
+      <p>After building, Crafting Interpreters' later chapters read like errata.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

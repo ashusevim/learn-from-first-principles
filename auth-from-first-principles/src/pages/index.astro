@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ authenticate --everything<span class="cursor">▊</span></p>
+    <h1>Auth, from the <em>password</em> up.</h1>
+    <p class="sub">
+      Sessions, cookies, JWT, OAuth — the vocabulary every app throws around, built
+      from first principles: a password hash, a random token, a signed claim. Break
+      the naive versions on camera, then compose the defenses into a complete auth
+      system.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-auth/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use OAuth", we answer "what does a session token actually prove?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Break the naive system</h3>
+      <p>Every weak construction gets attacked — by you, successfully.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the real thing</h3>
+      <p>Passwords, sessions, JWT, OAuth — all stdlib Python, all runnable.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>Assemble honestly</h3>
+      <p>The finale composes every defense — and names the remaining gaps.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

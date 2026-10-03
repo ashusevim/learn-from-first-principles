@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ render --everything<span class="cursor">▊</span></p>
+    <h1>A browser, from the <em>tokenizer</em> up.</h1>
+    <p class="sub">
+      Not the 300-line text renderer — the real pipeline: a spec-shaped tokenizer, an
+      error-recovering DOM, a selector-matching cascade engine, block and inline layout,
+      painting, links, history. Build the browser properly, one stage per chapter.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-a-browser/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "view source", we answer "how did those bytes become pixels?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Every pipeline stage is a program you can write, instrument, and break.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build the real thing</h3>
+      <p>Tokenize, tree-build, cascade, lay out, paint, navigate — for real pages.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The spec becomes readable</h3>
+      <p>After building, the HTML/CSS standards read like documentation of your code.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

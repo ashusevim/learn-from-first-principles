@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ ping --everything<span class="cursor">▊</span></p>
+    <h1>Networking, from the <em>raw bytes</em> up.</h1>
+    <p class="sub">
+      Most networking courses start with "here's the OSI model, memorize it." This one starts
+      with what's actually on the wire — and ends with you hand-crafting TCP handshakes,
+      writing an HTTP server with zero libraries, and building your own ping.
+    </p>
+    <a class="cta" href="/chapters/01-what-the-wire-carries/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "how to use sockets", we answer "what is on the wire?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Every packet is bytes you can capture, inspect, and forge yourself.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build a toy version</h3>
+      <p>A resolver, an HTTP server, a working ping — from raw sockets up.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The RFCs become readable</h3>
+      <p>After the bytes, the protocol documents read like plain English.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written — the rest are outlined and on the way.
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>

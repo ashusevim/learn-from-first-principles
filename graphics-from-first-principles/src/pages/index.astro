@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { CHAPTERS, PARTS } from '../lib/chapters';
+
+const writtenCount = CHAPTERS.filter((c) => c.written).length;
+---
+<Base>
+  <div class="narrow">
+  <section class="hero">
+    <p class="tagline">$ rasterize --everything<span class="cursor">▊</span></p>
+    <h1>Graphics, from the <em>framebuffer</em> up.</h1>
+    <p class="sub">
+      Every image you've ever seen on a screen is an array of pixels written by a loop.
+      This course builds the loop — lines, triangles, matrices, the z-buffer, shading —
+      then flips the direction of light with a ray tracer, and writes every pixel from
+      raw bytes with no libraries.
+    </p>
+    <a class="cta" href="/chapters/01-what-is-graphics/">Start Chapter 1 →</a>
+  </section>
+
+  <h2 class="section-title" id="how">How this works</h2>
+  <p class="section-sub">Every chapter follows the same promise:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3><span>01</span>Start below the abstraction</h3>
+      <p>Before "use a GPU", we answer "what is a pixel, physically?"</p>
+    </div>
+    <div class="method-card">
+      <h3><span>02</span>Nothing is magic</h3>
+      <p>Lines, triangles, shadows — algorithms with loops you can read.</p>
+    </div>
+    <div class="method-card">
+      <h3><span>03</span>Build both directions</h3>
+      <p>A rasterizer (triangles to pixels) AND a ray tracer (rays to triangles).</p>
+    </div>
+    <div class="method-card">
+      <h3><span>04</span>The GPU becomes visible</h3>
+      <p>Your per-triangle loops, re-read as vertex and fragment shaders.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title" id="chapters">Chapters</h2>
+  <p class="section-sub">
+    {writtenCount} of {CHAPTERS.length} chapters fully written{writtenCount === CHAPTERS.length ? ' — every chapter, start to finish.' : ' — the rest are outlined and on the way.'}
+  </p>
+  {PARTS.map((part) => (
+    <div>
+      <p class="part-label">{part}</p>
+      <div class="chapter-grid">
+        {CHAPTERS.filter((c) => c.part === part).map((c) => (
+          <a class="chapter-card" href={`/chapters/${c.slug}/`}>
+            <span class="num">{String(c.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="t">{c.title}</span>
+              <span class="b">{c.blurb}</span>
+            </span>
+            <span class="status dim">{c.written ? '✅' : '📝'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+  </div>
+</Base>
